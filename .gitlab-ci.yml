@@ -12,8 +12,8 @@ build_php_job:
   before_script:
   - docker login -u $CI_REGISTRY_USER -p $CI_REGISTRY_PASSWORD $CI_REGISTRY
   script:
-    - docker build -t $IMAGE_TAG/php -f Dockerfile-php.
-    - docker push $IMAGE_TAG/php
+    - docker build -t $IMAGE_TAG-php -f Dockerfile-php.
+    - docker push $IMAGE_TAG-php
 
 build_mysql_job:
   stage: build
@@ -22,8 +22,8 @@ build_mysql_job:
   before_script:
   - docker login -u $CI_REGISTRY_USER -p $CI_REGISTRY_PASSWORD $CI_REGISTRY
   script:
-    - docker build -t $IMAGE_TAG/mysql -f Dockerfile-php.
-    - docker push $IMAGE_TAG/mysql
+    - docker build -t $IMAGE_TAG-mysql -f Dockerfile-php.
+    - docker push $IMAGE_TAG-mysql
 
 deploy_job:
   stage: deploy 
