@@ -40,7 +40,7 @@ deploy_job:
     - kubectl apply -f php.yaml
   allow_failure: true
   artifacts:
-    path: 
+    paths: 
       - ./php.yaml
       - ./mysql.yaml
   environment:
