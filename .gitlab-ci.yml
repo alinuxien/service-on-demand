@@ -27,15 +27,13 @@ build_mysql_job:
     - docker push $IMAGE_TAG-mysql
 
 deploy_job:
-  variables:
-    CI_DEBUG_TRACE: "true"
   stage: deploy 
   tags:
     - shell
   script:
     - sudo cp /home/vagrant/.kube/config /home/gitlab-runner/.kube
-    - 'sed -i "s/image: PHP_IMAGE/image: \$IMAGE_TAG-php /g" php.yaml'
-    - 'sed -i "s/image: MYSQL_IMAGE/image: \$IMAGE_TAG-mysql /g" mysql.yaml'
+    - 'sed -i "s/image: PHP_IMAGE/image: ${IMAGE_TAG}-php /g" php.yaml'
+    - 'sed -i "s/image: MYSQL_IMAGE/image: ${IMAGE_TAG}-mysql /g" mysql.yaml'
     - kubectl apply -f secret-mysql.yaml
     - kubectl apply -f mysql.yaml
     - kubectl apply -f configmap.yaml
