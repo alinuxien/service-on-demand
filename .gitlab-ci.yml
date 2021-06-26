@@ -27,6 +27,8 @@ build_mysql_job:
     - docker push $IMAGE_TAG-mysql
 
 deploy_job:
+  variables:
+    CI_DEBUG_TRACE: "true"
   stage: deploy 
   tags:
     - shell
