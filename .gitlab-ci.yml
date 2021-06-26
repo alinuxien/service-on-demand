@@ -22,7 +22,7 @@ build_mysql_job:
   before_script:
   - docker login -u $CI_REGISTRY_USER -p $CI_REGISTRY_PASSWORD $CI_REGISTRY
   script:
-    - docker build -t $IMAGE_TAG-mysql -f Dockerfile-php .
+    - docker build -t $IMAGE_TAG-mysql -f Dockerfile-mysql .
     - docker push $IMAGE_TAG-mysql
 
 deploy_job:
