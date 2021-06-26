@@ -30,8 +30,8 @@ deploy_job:
   tags:
     - shell
   script:
-    - sed -i "s/image\: \$PHP_IMAGE/image: \$IMAGE_TAG\/php/g" php.yaml
-    - sed -i "s/image\: \$MYSQL_IMAGE/image: \$IMAGE_TAG\/mysql/g" mysql.yaml
+    - sed -i "s/image: PHP_IMAGE/image: \$IMAGE_TAG\/php/g" php.yaml
+    - sed -i "s/image: MYSQL_IMAGE/image: \$IMAGE_TAG\/mysql/g" mysql.yaml
     - sudo -u vagrant kubectl apply -f secret.yaml
     - sudo -u vagrant kubectl apply -f mysql.yaml
     - sudo -u vagrant kubectl apply -f configmap.yaml
