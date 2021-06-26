@@ -38,6 +38,7 @@ deploy_job:
     - kubectl apply -f mysql.yaml
     - kubectl apply -f configmap.yaml
     - kubectl apply -f php.yaml
+  allow_failure: true
   environment:
     name: php_mysql_in_kube_pods
     url: http://localhost:30000/
