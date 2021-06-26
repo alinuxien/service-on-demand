@@ -1,6 +1,7 @@
 stages:
   - build
   - deploy
+  - destroy
 
 variables:
   IMAGE_TAG: $CI_REGISTRY_IMAGE:$CI_COMMIT_REF_SLUG-$CI_COMMIT_SHORT_SHA
@@ -41,3 +42,13 @@ deploy_job:
     name: php_mysql_in_kube_pods
     url: http://localhost:30000/
 
+destroy_job:
+  stage: destroy 
+  tags:
+    - shell
+  script:
+    - kubectl delete -f php.yaml
+    - kubectl delete -f configmap.yaml
+    - kubectl delete -f mysql.yaml
+    - kubectl delete -f secret-mysql.yaml
+  when: manual
