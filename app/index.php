@@ -1,6 +1,6 @@
 <?php
 // Affiche le nom de la machine qui execute le script
-echo gethostname();
+echo gethostname()."\n";
 
 // Récupération des informations de connexion depuis les variables d'environnement
 $mysql_server = getenv("MYSQL_SERVER");
