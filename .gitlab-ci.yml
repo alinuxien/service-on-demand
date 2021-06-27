@@ -15,7 +15,10 @@ prepare_job:
     - 'sed -i "s~mysql-username:~mysql-username: $(echo -n ${MYSQL_USER} | base64) ~g" secret-mysql.yaml'
     - 'sed -i "s~mysql-password:~mysql-password: $(echo -n ${MYSQL_PASSWORD} | base64) ~g" secret-mysql.yaml'
     - 'sed -i "s~mysql-root-password:~mysql-root-password: $(echo -n ${MYSQL_ROOT_PASSWORD} | base64) ~g" secret-mysql.yaml'
-
+  artifacts:
+    paths: 
+      - ./secret-mysql.yaml
+ 
 build_php_job:
   stage: build
   tags:
