@@ -2,12 +2,6 @@
 // Affiche le nom de la machine qui execute le script
 echo gethostname();
 
-// Affiche l'ip du serveur 
-echo getenv("SERVER_ADDR");
-
-// Affiche l'ip du visiteur
-echo getenv("REMOTE_ADDR");
-
 // Récupération des informations de connexion depuis les variables d'environnement
 $mysql_server = getenv("MYSQL_SERVER");
 $mysql_user = getenv("MYSQL_USER");
@@ -22,8 +16,7 @@ if ($conn->connect_error) {
 }
 
 // Affichage du résultat de la connexion et des infos sur le serveur de BDD
-echo "Connexion reussie a la BDD";
-echo "Nom du serveur de BDD : ".$mysql_server;
-echo "Version du serveur de BDD :".mysqli_get_server_info($conn);
+echo "Connexion reussie a la BDD"."\n";
+echo "Version du serveur de BDD :".mysqli_get_server_info($conn)."\n";
 ?>
 
