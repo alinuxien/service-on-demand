@@ -32,7 +32,6 @@ deploy_job:
     - shell
   script:
     - sudo cp /home/vagrant/.kube/config /home/gitlab-runner/.kube
-    - $(echo ${IMAGE_TAG})
     - 'sed -i "s~image: PHP_IMAGE~image: $(echo ${IMAGE_TAG})-php ~g" php.yaml'
     - 'sed -i "s~image: MYSQL_IMAGE~image: $(echo ${IMAGE_TAG})-mysql ~g" mysql.yaml'
     - kubectl apply -f secret-mysql.yaml
