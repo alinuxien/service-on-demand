@@ -2,3 +2,5 @@ FROM mysql:5.7.34
 
 MAINTAINER alinuxien https://github.com/alinuxien
 
+VOLUME /var/lib/mysql
+
