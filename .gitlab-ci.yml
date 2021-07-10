@@ -28,8 +28,8 @@ tag_php_job:
   script:
     - docker images
     - docker pull registry.mygta.com/alinuxien/mon-projet-php-mysql:master-03264125
-    - docker tag registry.mygta.com/alinuxien/mon-projet-php-mysql:master-03264125 $(echo ${IMAGE_TAG})
-    - docker push $(echo ${IMAGE_TAG})
+    - docker tag registry.mygta.com/alinuxien/mon-projet-php-mysql:master-03264125 $(echo ${IMAGE_TAG})-php
+    - docker push $(echo ${IMAGE_TAG})-php
 
 build_mysql_job:
   stage: build
