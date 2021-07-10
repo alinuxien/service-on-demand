@@ -25,7 +25,7 @@ tag_php_job:
   tags:
     - shell
   before_script:
-  - docker login registry.mygta.com
+  - docker login registry.mygta.com -p q1_HxWsDmrF1XkvjZKMU
   script:
     - docker pull $DEV_IMAGE_TAG
     - docker tag $DEV_IMAGE_TAG $(echo ${IMAGE_TAG})
