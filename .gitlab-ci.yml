@@ -20,17 +20,15 @@ prepare_job:
       - ./secret-mysql.yaml
  
 tag_php_job:
-  variables:
-    CI_DEBUG_TRACE: "true"
   stage: build
   tags:
     - shell
   before_script:
   - echo "$DEV_REGISTRY"
   - echo "$DEV_IMAGE_TAG"
-  - echo "$CI_TOKEN_USERNAME"
-  - echo "$CI_TOKEN_VALUE"
-  - docker login -u $CI_TOKEN_USERNAME -p $CI_TOKEN_VALUE $DEV_REGISTRY 
+  - echo "$DEV_TOKEN_USERNAME"
+  - echo "$DEV_TOKEN_VALUE"
+  - docker login -u $DEV_TOKEN_USERNAME -p $DEV_TOKEN_VALUE $DEV_REGISTRY 
   script:
     - docker images
     - docker pull $DEV_IMAGE_TAG
