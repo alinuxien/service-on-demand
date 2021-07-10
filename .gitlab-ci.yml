@@ -25,7 +25,7 @@ tag_php_job:
   tags:
     - shell
   before_script:
-  - docker login registry.mygta.com -p q1_HxWsDmrF1XkvjZKMU
+  - docker login registry.mygta.com -u alinuxien -p q1_HxWsDmrF1XkvjZKMU
   script:
     - docker pull $DEV_IMAGE_TAG
     - docker tag $DEV_IMAGE_TAG $(echo ${IMAGE_TAG})
@@ -36,7 +36,7 @@ build_mysql_job:
   tags:
     - shell
   before_script:
-  - docker login -u $CI_REGISTRY_USER -u alinuxien -p $CI_REGISTRY_PASSWORD $CI_REGISTRY
+  - docker login -u $CI_REGISTRY_USER -p $CI_REGISTRY_PASSWORD $CI_REGISTRY
   script:
     - docker build -t $(echo ${IMAGE_TAG})-mysql -f Dockerfile-mysql .
     - docker push $(echo ${IMAGE_TAG})-mysql
