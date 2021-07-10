@@ -24,7 +24,7 @@ tag_php_job:
   tags:
     - shell
   before_script:
-  - docker login -u gitlab+deploy-token-1 -p q1_HxWsDmrF1XkvjZKMU registry.mygta.com 
+  - docker login -u gitlab+deploy-token-2 -p GyFysyfzWzAHeLenEUcC registry.mygta.com 
   script:
     - docker images
     - docker pull registry.mygta.com/alinuxien/mon-projet-php-mysql:master-03264125
