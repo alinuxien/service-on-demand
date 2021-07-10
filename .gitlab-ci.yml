@@ -20,17 +20,14 @@ prepare_job:
       - ./secret-mysql.yaml
  
 tag_php_job:
-  variables:
-    UPSTREAM_BRANCH: $DEV_IMAGE_TAG 
   stage: build
   tags:
     - shell
   before_script:
   - docker login registry.mygta.com -u gitlab+deploy-token-1 -p q1_HxWsDmrF1XkvjZKMU
   script:
-    - echo $DEV_IMAGE_TAG
-    - docker pull $DEV_IMAGE_TAG
-    - docker tag $DEV_IMAGE_TAG $(echo ${IMAGE_TAG})
+    - docker pull master-e0df0588
+    - docker tag master-e0df0588 $(echo ${IMAGE_TAG})
     - docker push $(echo ${IMAGE_TAG})
 
 build_mysql_job:
