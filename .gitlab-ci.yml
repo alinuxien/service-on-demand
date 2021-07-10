@@ -19,16 +19,6 @@ prepare_job:
     paths: 
       - ./secret-mysql.yaml
  
-build_php_job:
-  stage: build
-  tags:
-    - shell
-  before_script:
-  - docker login -u $CI_REGISTRY_USER -p $CI_REGISTRY_PASSWORD $CI_REGISTRY
-  script:
-    - docker build -t $(echo ${IMAGE_TAG})-php -f Dockerfile-php .
-    - docker push $(echo ${IMAGE_TAG})-php
-
 build_mysql_job:
   stage: build
   tags:
