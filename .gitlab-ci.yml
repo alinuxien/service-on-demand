@@ -22,22 +22,15 @@ prepare_job:
 tag_php_job:
   variables:
     CI_DEBUG_TRACE: "true"
-  inherit:
-    default: false
-    variables:
-      - $DEV_REGISTRY
-      - $DEV_IMAGE_TAG
-      - $DEV_TOKEN_USERNAME
-      - $DEV_TOKEN_VALUE
   stage: build
   tags:
     - shell
   before_script:
   - echo "$DEV_REGISTRY"
   - echo "$DEV_IMAGE_TAG"
-  - echo "$DEV_TOKEN_USERNAME"
-  - echo "$DEV_TOKEN_VALUE"
-  - docker login -u $DEV_TOKEN_USERNAME -p $DEV_TOKEN_VALUE $DEV_REGISTRY 
+  - echo "$CI_TOKEN_USERNAME"
+  - echo "$CI_TOKEN_VALUE"
+  - docker login -u $CI_TOKEN_USERNAME -p $CI_TOKEN_VALUE $DEV_REGISTRY 
   script:
     - docker images
     - docker pull $DEV_IMAGE_TAG
