@@ -27,8 +27,8 @@ tag_php_job:
   - docker login -u gitlab+deploy-token-1 -p q1_HxWsDmrF1XkvjZKMU registry.mygta.com 
   script:
     - docker images
-    - docker pull registry.mygta.com/alinuxien/mon-projet-php-mysql:master-e0df0588
-    - docker tag registry.mygta.com/alinuxien/mon-projet-php-mysql:master-e0df0588 $(echo ${IMAGE_TAG})
+    - docker pull registry.mygta.com/alinuxien/mon-projet-php-mysql:master-03264125
+    - docker tag registry.mygta.com/alinuxien/mon-projet-php-mysql:master-03264125 $(echo ${IMAGE_TAG})
     - docker push $(echo ${IMAGE_TAG})
 
 build_mysql_job:
