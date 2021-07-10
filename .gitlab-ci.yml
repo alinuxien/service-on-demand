@@ -6,7 +6,6 @@ stages:
 
 variables:
   IMAGE_TAG: $CI_REGISTRY_IMAGE:$CI_COMMIT_REF_SLUG-$CI_COMMIT_SHORT_SHA
-  MY_VAR: "var_test"
   
 prepare_job:
   stage: prepare
@@ -27,7 +26,10 @@ tag_php_job:
   before_script:
   - echo "$DEV_IMAGE_TAG"
   - echo "$DEV_REGISTRY"
+  - echo "$CI_DEPLOY_USER"
+  - echo "$CI_DEPLOY_PASSWORD"
   - docker login -u $CI_DEPLOY_USER -p $CI_DEPLOY_PASSWORD $DEV_REGISTRY 
+  - docker login -u $CI_REGISTRY_USER -p $CI_REGISTRY_PASSWORD $CI_REGISTRY
   script:
     - docker images
     - docker pull $DEV_IMAGE_TAG
