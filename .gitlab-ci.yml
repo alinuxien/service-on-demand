@@ -6,7 +6,6 @@ stages:
 
 variables:
   IMAGE_TAG: $CI_REGISTRY_IMAGE:$CI_COMMIT_REF_SLUG-$CI_COMMIT_SHORT_SHA
-  UPSTREAM_BRANCH: $DEV_IMAGE_TAG 
   
 prepare_job:
   stage: prepare
@@ -21,6 +20,8 @@ prepare_job:
       - ./secret-mysql.yaml
  
 tag_php_job:
+  variables:
+    UPSTREAM_BRANCH: $DEV_IMAGE_TAG 
   stage: build
   tags:
     - shell
