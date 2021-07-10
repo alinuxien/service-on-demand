@@ -29,6 +29,10 @@ tag_php_job:
   tags:
     - shell
   before_script:
+  - echo $DEV_REGISTRY
+  - echo $DEV_IMAGE_TAG
+  - echo $DEV_TOKEN_USERNAME
+  - echo $DEV_TOKEN_VALUE
   - docker login -u $DEV_TOKEN_USERNAME -p $DEV_TOKEN_VALUE $DEV_REGISTRY 
   script:
     - docker images
