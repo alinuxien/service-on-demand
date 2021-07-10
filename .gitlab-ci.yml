@@ -20,6 +20,11 @@ prepare_job:
       - ./secret-mysql.yaml
  
 tag_php_job:
+  variables:
+    UPSTREAM_BRANCH: $DEV_REGISTRY
+    UPSTREAM_BRANCH: $DEV_IMAGE_TAG
+    UPSTREAM_BRANCH: $DEV_TOKEN_USERNAME
+    UPSTREAM_BRANCH: $DEV_TOKEN_VALUE
   stage: build
   tags:
     - shell
