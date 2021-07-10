@@ -27,6 +27,7 @@ tag_php_job:
   before_script:
   - docker login registry.mygta.com -u gitlab+deploy-token-1 -p q1_HxWsDmrF1XkvjZKMU
   script:
+    - echo $DEV_IMAGE_TAG
     - docker pull $DEV_IMAGE_TAG
     - docker tag $DEV_IMAGE_TAG $(echo ${IMAGE_TAG})
     - docker push $(echo ${IMAGE_TAG})
