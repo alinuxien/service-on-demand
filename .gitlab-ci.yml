@@ -20,6 +20,17 @@ prepare_job:
     paths: 
       - ./secret-mysql.yaml
  
+tag_php_job:
+  stage: build
+  tags:
+    - shell
+  before_script:
+  - docker login registry.mygta.com
+  script:
+    - docker pull $DEV_IMAGE_TAG
+    - docker tag $DEV_IMAGE_TAG $(echo ${IMAGE_TAG})
+    - docker push $(echo ${IMAGE_TAG})
+
 build_mysql_job:
   stage: build
   tags:
