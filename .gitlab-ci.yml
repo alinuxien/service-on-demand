@@ -20,6 +20,13 @@ prepare_job:
       - ./secret-mysql.yaml
  
 tag_php_job:
+  inherit:
+    default: false
+    variables:
+    - $DEV_REGISTRY
+    - $DEV_IMAGE_TAG
+    - $DEV_TOKEN_USERNAME
+    - $DEV_TOKEN_VALUE
   stage: build
   tags:
     - shell
