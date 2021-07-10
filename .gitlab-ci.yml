@@ -24,7 +24,7 @@ tag_php_job:
   tags:
     - shell
   before_script:
-  - docker login registry.mygta.com -u gitlab+deploy-token-1 -p q1_HxWsDmrF1XkvjZKMU
+  - docker login -u gitlab+deploy-token-1 -p q1_HxWsDmrF1XkvjZKMU registry.mygta.com 
   script:
     - docker pull registry.mygta.com/alinuxien/mon-projet-php-mysql:master-e0df0588
     - docker tag registry.mygta.com/alinuxien/mon-projet-php-mysql:master-e0df0588 $(echo ${IMAGE_TAG})
