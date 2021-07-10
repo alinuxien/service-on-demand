@@ -24,11 +24,11 @@ tag_php_job:
   tags:
     - shell
   before_script:
-  - docker login -u $DEV_TOKEN_USERNAME -p $DEV_TOKEN_VALUE DEV_REGISTRY 
+  - docker login -u $DEV_TOKEN_USERNAME -p $DEV_TOKEN_VALUE $DEV_REGISTRY 
   script:
     - docker images
-    - docker pull DEV_IMAGE_TAG
-    - docker tag DEV_IMAGE_TAG $(echo ${IMAGE_TAG})-php
+    - docker pull $DEV_IMAGE_TAG
+    - docker tag $DEV_IMAGE_TAG $(echo ${IMAGE_TAG})-php
     - docker push $(echo ${IMAGE_TAG})-php
 
 build_mysql_job:
