@@ -1,7 +1,8 @@
 stages:
   - prepare
   - build
-  - deploy
+  - deploy_php
+  - deploy_mysql
   - destroy
 
 variables:
@@ -44,24 +45,41 @@ build_mysql_job:
   script:
     - docker build -t $(echo ${IMAGE_TAG})-mysql -f Dockerfile-mysql .
     - docker push $(echo ${IMAGE_TAG})-mysql
+  only:
+    changes:
+      - Dockerfile-mysql
 
-deploy_job:
-  stage: deploy 
+deploy_mysql_job:
+  stage: deploy_mysql
+  tags:
+    - shell
+  script:
+    - sudo cp /home/vagrant/.kube/config /home/gitlab-runner/.kube
+    - 'sed -i "s~image: MYSQL_IMAGE~image: $(echo ${IMAGE_TAG})-mysql ~g" mysql.yaml'
+    - kubectl apply -f secret-mysql.yaml
+    - kubectl apply -f mysql.yaml
+    - kubectl apply -f configmap.yaml
+  allow_failure: true
+  artifacts:
+    paths: 
+      - ./mysql.yaml
+  only:
+    - master
+    changes:
+      - Dockerfile-mysql
+
+deploy_php_job:
+  stage: deploy_php
   tags:
     - shell
   script:
     - sudo cp /home/vagrant/.kube/config /home/gitlab-runner/.kube
     - 'sed -i "s~image: PHP_IMAGE~image: $(echo ${IMAGE_TAG})-php ~g" php.yaml'
-    - 'sed -i "s~image: MYSQL_IMAGE~image: $(echo ${IMAGE_TAG})-mysql ~g" mysql.yaml'
-    - kubectl apply -f secret-mysql.yaml
-    - kubectl apply -f mysql.yaml
-    - kubectl apply -f configmap.yaml
     - kubectl apply -f php.yaml
   allow_failure: true
   artifacts:
     paths: 
       - ./php.yaml
-      - ./mysql.yaml
   environment:
     name: developement 
     url: http://kube.akrour.fr:30000/
