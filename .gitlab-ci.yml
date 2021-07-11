@@ -59,17 +59,14 @@ deploy_mysql_job:
     - kubectl apply -f secret-mysql.yaml
     - kubectl apply -f mysql.yaml
     - kubectl apply -f configmap.yaml
-  allow_failure: true
   artifacts:
     paths: 
       - ./mysql.yaml
-  only:
-    refs:
-      - branches
-    changes:
-      - Dockerfile-mysql
-    variables:
-      - $CI_COMMIT_REF_NAME == "master"
+  rules:
+    - if: '$CI_COMMIT_REF_NAME == "master"'
+      changes:
+        - Dockerfile-mysql
+      allow_failure: true
 
 deploy_php_job:
   stage: deploy_php
