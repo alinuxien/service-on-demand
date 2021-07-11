@@ -5,7 +5,7 @@ stages:
   - destroy
 
 variables:
-  IMAGE_TAG: $CI_REGISTRY_IMAGE:$CI_COMMIT_REF_SLUG-$CI_COMMIT_SHORT_SHA
+  IMAGE_TAG: $CI_REGISTRY_IMAGE:$CI_COMMIT_REF_SLUG-$CI_COMMIT_SHORT_SHA-$CI_PIPELINE_ID
   
 prepare_job:
   stage: prepare
@@ -31,7 +31,7 @@ tag_php_job:
   - docker login -u $CI_DEPLOY_USER -p $CI_DEPLOY_PASSWORD $DEV_REGISTRY 
   script:
     - docker pull $DEV_IMAGE_TAG
-    - docker tag $DEV_IMAGE_TAG $(echo ${IMAGE_TAG})-$(echo ${CI_JOB_ID})-php
+    - docker tag $DEV_IMAGE_TAG $(echo ${IMAGE_TAG})-php
     - docker login -u $CI_REGISTRY_USER -p $CI_REGISTRY_PASSWORD $CI_REGISTRY
     - docker push $(echo ${IMAGE_TAG})-php
 
