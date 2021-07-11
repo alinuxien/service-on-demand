@@ -17,6 +17,7 @@ spec:
       containers:
       - name: myphp
         image: PHP_IMAGE
+        imagePullPolicy: "Always"
         ports:
         - containerPort: 80
         env: 
