@@ -46,7 +46,7 @@ build_mysql_job:
     - docker build -t $(echo ${IMAGE_TAG})-mysql -f Dockerfile-mysql .
     - docker push $(echo ${IMAGE_TAG})-mysql
   rules:
-    changes:
+    - changes:
       - Dockerfile-mysql
 
 deploy_mysql_job:
