@@ -64,9 +64,12 @@ deploy_mysql_job:
     paths: 
       - ./mysql.yaml
   only:
-    - master
+    refs:
+      - branches
     changes:
       - Dockerfile-mysql
+    variables:
+      - $CI_COMMIT_REF_NAME == "master"
 
 deploy_php_job:
   stage: deploy_php
