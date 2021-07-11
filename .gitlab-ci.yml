@@ -29,7 +29,7 @@ tag_php_job:
   - echo "$CI_DEPLOY_USER"
   - echo "$CI_DEPLOY_PASSWORD"
   - docker login -u $CI_DEPLOY_USER -p $CI_DEPLOY_PASSWORD $DEV_REGISTRY 
-    script:
+  script:
     - docker pull $DEV_IMAGE_TAG
     - docker tag $DEV_IMAGE_TAG $(echo ${IMAGE_TAG})-php
     - docker login -u $CI_REGISTRY_USER -p $CI_REGISTRY_PASSWORD $CI_REGISTRY
