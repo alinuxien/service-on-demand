@@ -63,7 +63,7 @@ deploy_job:
       - ./php.yaml
       - ./mysql.yaml
   environment:
-    name: php_mysql_in_kube_pods
+    name: developement 
     url: http://kube.akrour.fr:30000/
   only:
     - master
