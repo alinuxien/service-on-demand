@@ -1,8 +1,8 @@
 stages:
   - prepare
   - build
-  - deploy_php
   - deploy_mysql
+  - deploy_php
   - destroy
 
 variables:
