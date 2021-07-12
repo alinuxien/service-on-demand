@@ -4,9 +4,23 @@ stages:
   - deploy
   - destroy
 
+# Préparation du tag de l'image container PHP pour dépot sur le Docker Hub
+# et utilisation par le Cluster Kubernetes
+# Le numéro de pipeline CI_PIPELINE_ID est ajouté pour forcer la prise en compte par Kubernetes, 
+# et géré automatiquement par GitLab
+# Nécessite de définir les variables de CI/CD : 
+# CI_REGISTRY : url de la registry Docker Hub ( ou autre )
+# CI_REGISTRY_IMAGE : url du repository du projet dans la registry
+# CI_REGISTRY_USER : nom d'utilisateur pour connexion à la registry
+# CI_REGISTRY_PASSWORD : mot de passe pour connexion à la registry
 variables:
   IMAGE_TAG: $CI_REGISTRY_IMAGE:$CI_COMMIT_REF_SLUG-$CI_COMMIT_SHORT_SHA-$CI_PIPELINE_ID
-  
+
+# Préparation du manifeste Kubernetes de gestion des crédentials MySQL
+# basé sur les variables de CI/CD, qu'il convient de définir : 
+# MYSQL_ROOT_PASSWORD 
+# MYSQL_USER
+# MYSQL_PASSWORD
 prepare_job:
   stage: prepare
   tags:
@@ -18,7 +32,10 @@ prepare_job:
   artifacts:
     paths: 
       - ./secret-mysql.yaml
- 
+
+# Récupération de l'image du container PHP contenant le code de l'application du développeur
+# depuis la Container Registry de GitLab
+# Tag de cette image pour envoi vers la registry Docker Hub 
 tag_php_job:
   stage: build
   tags:
@@ -31,6 +48,7 @@ tag_php_job:
     - docker login -u $CI_REGISTRY_USER -p $CI_REGISTRY_PASSWORD $CI_REGISTRY
     - docker push $(echo ${IMAGE_TAG})-php
 
+# Préparation de l'image du container MySQL
 build_mysql_job:
   stage: build
   tags:
@@ -41,6 +59,10 @@ build_mysql_job:
     - docker build -t $(echo ${IMAGE_TAG})-mysql -f Dockerfile-mysql .
     - docker push $(echo ${IMAGE_TAG})-mysql
 
+# Récupération du fichier de configuration d'accès au Cluster Kubernetes
+# Préparation des manifestes de déploiement et de services pour PHP et MySQL dans Kubernetes
+# Déploiement des containers PHP et MySQL à l'aide des manifestes Kubernetes
+# et du configmap pour le nom du serveur MySQL
 deploy_job:
   stage: deploy 
   tags:
@@ -54,16 +76,19 @@ deploy_job:
     - kubectl apply -f configmap.yaml
     - kubectl apply -f php.yaml
   allow_failure: true
+  # Mise à disposition des manifestes générés
   artifacts:
     paths: 
       - ./php.yaml
       - ./mysql.yaml
+  # Mise à disposition d'un environnement pour accéder à l'application PHP
   environment:
     name: developement 
     url: http://kube.akrour.fr:30000/
   only:
     - master
 
+# Nettoyage des objets Kubernetes générés, à déclechement manuel
 destroy_job:
   stage: destroy 
   tags:
