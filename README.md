@@ -21,10 +21,8 @@ Lorsque le Pipeline du Service On Demand est déclenché, il va :
 - le pod MySQL crée un stockage "persistant" basique, basé sur un volume nommé
 
 ## Ca ressemble à quoi ?
-![Vue d'ensemble de l'Architecture Cloud AWS](https://github.com/alinuxien/k8s-aws-iac/blob/master/K8s%20on%20AWS%20-%20Global%20Architecture.png)
+![Vue d'ensemble du Processus du Service On Demand](https://github.com/alinuxien/service-on-demand/blob/master/Service%20On%20Demand.png)
 
-
-![Vue d'ensemble de l'Architecture Réseaux entre Pods et entre Nodes Kubernetes](https://github.com/alinuxien/k8s-aws-iac/blob/master/K8s%20on%20AWS%20-%20PODS%20Networking.png)
 ## Contenu ?
 - Un pipeline de CI/CD Gitlab : `gitlab-ci.yml` 
 - Le dossier `certs` contient tous les fichiers json nécessaires à la création des Certificats pour le Cluster
