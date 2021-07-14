@@ -63,7 +63,7 @@ Dans GitLab :
 Et voilà! Le Service On Demand est prêt. 
 
 Mais comme je l'ai indiqué, il ne peut être exécuté tel quel.
-Les projets "clients" vont maintenant utiliser ce service à conditions qu'ils fassent partie du groupe `Service On Demand`...
+Les projets "clients" vont maintenant pouvoir utiliser ce service à condition qu'ils fassent partie du groupe `Service On Demand`...
 
 # Et après ?
 Pour utiliser ce service, vous pouvez retrouver un projet client "type" [disponible ici](https://github.com/alinuxien/service-on-demand-demo-client)
