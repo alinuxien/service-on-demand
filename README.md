@@ -41,10 +41,10 @@ Vous pouvez trouver de quoi créer tout cela sur mon projet [k8s-aws-iac](https:
 ## Comment ça s'utilise ?
 Dans GitLab :
 - vous devez créer un nouveau projet nommé `Service On Demand` et y déposer le contenu de ce dépot ( `https://github.com/alinuxien/service-on-demand` )
-- vous devez ensuite créer des variables de CI/CD pour renseigner les crédentials Docker Hub ainsi que MySQL : 
+- vous devez ensuite créer des variables de CI/CD pour renseigner les crédentials Docker Hub, ainsi que MySQL : 
 - Dans le projet, allez dans le menu de gauche, Settings -> CI/CD, puis développez les `Variables`, et créez : 
 - CI_REGISTRY **en masqué** : docker.io
-- CI_REGISTRY_IMAGE : index.docker.io/username/repository
+- CI_REGISTRY_IMAGE : index.docker.io/*username*/*repository*
 - CI_REGISTRY_PASSWORD **en masqué**
 - CI_REGISTRY_USER **en masqué**
 - MYSQL_ROOT_PASSWORD **en masqué**
