@@ -32,8 +32,8 @@ Lorsque le Pipeline du Service On Demand est déclenché, il va :
 
  
 ## J'ai besoin de quoi ?
-- Un Cluster Kubernetes, avec un accès configuré depuis la ligne de commande ( kubectl )
 - Une VM GitLab locale, avec certains utilitaires, et un Runner de type Shell. 
+- Un Cluster Kubernetes, avec un accès configuré depuis la ligne de commande **de l'utilisateur `vagrant` de la vm** ( kubectl )
 - Un repository Docker Hub pour stocker les images PHP et MySQL
  
 Vous pouvez trouver de quoi créer tout cela sur mon projet [k8s-aws-iac](https://github.com/alinuxien/k8s-aws-iac)
