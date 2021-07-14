@@ -12,7 +12,7 @@ Le Pipeline du Service On Demand n'est pas prévu pour être exécuté directeme
 Lorsque le Pipeline du Service On Demand est déclenché, il va :
 - préparer un manisfeste Kubernetes pour la gestion des crédentials MySQL
 - préparer une image Docker MySQL et la pousser sur le Docker Hub
-- récupérer l'image Docker de l'application du développeur depuis la Container Registry
+- récupérer l'image Docker de l'application du développeur depuis la Container Registry intégrée à GitLab
 - envoyer cette image sur le Docker Hub
 - créer des objets Kubernetes de `deployment` et de `service` pour l'application PHP et MySQL, sur un cluster distant, en utilisant les images stockées sur le Docker Hub.
 - le pod PHP créé peut accéder au pod MySQL
