@@ -49,7 +49,7 @@ Dans GitLab :
 - CI_REGISTRY_USER **en masqué**
 - MYSQL_ROOT_PASSWORD **en masqué**
 - MYSQL_USER **en masqué**
-- MYSQL_USER **en masqué**
+- MYSQL_PASSWORD **en masqué**
 - vous allez maintenant créer un groupe GitLab nommé `Service On Demand` et mettre le projet `Service On Demand`dedans 
 - dans ce groupe, vous allez créer un token de déploiement pour accéder à la Container Registry GitLab : 
 - dans le menu Settings -> Repository, développez `Deploy tokens`
