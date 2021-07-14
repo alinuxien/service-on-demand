@@ -5,8 +5,6 @@ Il s'agit d'un projet réalisé en Juillet 2021 dans le cadre de ma formation "E
 Il s'agit seulement d'un projet d'étude, à NE PAS UTILISER EN PROD  !!!
 
 ## Ca fait quoi ?
-C'est un service de déploiement d'une application PHP sur un cluster Kubernetes, en utilisant GitLab.
-
 Dans le détails, il s'agit de mettre en place un Service On Demand, composé essentiellement d'un Pipeline de CI/CD GitLab, qui pourra être mis à disposition des développeurs, pour leur permettre de développer leur application PHP-MySQL avec GitLab CI/CD, et de la voir déployée automatiquement sur un cluster Kubernetes.
 
 Le Pipeline du Service On Demand n'est pas prévu pour être exécuté directement, mais à la demande, grâce à un trigger ( déclencheur ) depuis un autre Pipeline, celui du développeur.
