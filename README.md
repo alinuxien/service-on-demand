@@ -16,6 +16,7 @@ Lorsque le Pipeline du Service On Demand est déclenché, il va :
 - envoyer cette image sur le Docker Hub
 - créer des objets Kubernetes de `deployment` et de `service` pour l'application PHP et MySQL, et d'autres objets Kubernetes utiles, sur un cluster distant, en utilisant les images stockées sur le Docker Hub.
 - les 2 pods PHP créés peuvent accéder au pod MySQL
+- les credentials MySQL seront accessibles en variables d'environnement depuis les pods PHP ( pour les noms, voir ci-dessous : variables de CI/CD )
 - le pod MySQL utilise un stockage "persistant" basique pour les données, basé sur un volume anonyme Docker
 
 ## Ca ressemble à quoi ?
@@ -23,53 +24,46 @@ Lorsque le Pipeline du Service On Demand est déclenché, il va :
 
 ## Contenu ?
 - Un pipeline de CI/CD Gitlab : `gitlab-ci.yml` 
-- Le dossier `certs` contient tous les fichiers json nécessaires à la création des Certificats pour le Cluster
-- Le dossier `terraform` contient les scripts de création des ressources sur AWS
-- Le dossier `ansible` contient les playbooks de configuration des ressources sur AWS
-- Le fichier `coredns-1.8.yaml` est un manifeste Kubernetes complet pour la configuration du Serveur DNS interne au Cluster
+- Le fichier `secrets.yaml` qui définit un objet Kubernetes pour stocker les credentials MySQL de façon sécurisée
+- Le fichier `Dockerfile-mysql` pour créer l'image du Container Docker de serveur MySQL
+- Le fichier `configmap.yaml` pour rendre disponible l'accès au service MySQL
+- Le fichier `mysql.yaml` pour créer le déploiement et le service Kubernetes pour MySQL
+- Le fichier `php.yaml` pour créer le déploiement et le service Kubernetes pour l'application PHP
+
  
 ## J'ai besoin de quoi ?
-- Une VM GitLab locale, avec certains utilitaires, et un Runner de type Shell. Vous pouvez trouver de quoi en créer une sur mesure sur mon projet [gitlab-iac](https://github.com/alinuxien/gitlab-iac)
-- Un compte AWS avec un bucket S3 pour stocker les Remote State Terraform. Vous trouverez les instructions si besoin [ici](https://docs.aws.amazon.com/fr_fr/AmazonS3/latest/user-guide/create-bucket.html)
-- Un nom de domaine valide pour pouvoir accéder aux pods applicatifs depuis un navigateur web. Ce nom de domaine doit être soit hébergé chez AWS Route 53, soit configuré pour déléguer la gestion à AWS Route 53
+- Un Cluster Kubernetes, avec un accès configuré depuis la ligne de commande ( kubectl )
+- Une VM GitLab locale, avec certains utilitaires, et un Runner de type Shell. 
+- Un repository Docker Hub pour stocker les images PHP et MySQL
+ 
+Vous pouvez trouver de quoi créer tout cela sur mon projet [k8s-aws-iac](https://github.com/alinuxien/k8s-aws-iac)
 
 ## Comment ça s'utilise ?
-Chez AWS, pour ceux qui hébergent leur nom de domaine hors AWS Route 53 :
-
-créez une zone hébergée sur votre nom de domaine ( ou sous-domaine ), service Route 53, 
-notez les noms des 4 serveurs DNS apparus dans l'enregistrement de type NS, et réalisez la redirection chez votre provider DNS ( 4 enregistrements de type NS aussi, je ne m'étale pas sur ce point )
-
-Chez AWS, pour tous : 
-créez un certificat AWS ACM sur votre nom de domaine, service Certificate Manager, avec validation par DNS, avec l'assitance automatique Route 53 ( puisque c'est maintenant lui qui gère le domaine / sous-domaine )
-
-Dans un Terminal : 
-- générez une paire de clés SSH qui seront dédiées au Cluster, dans le dossier de votre choix : `ssh-keygen -f chemin-au-choix/nom-de-la-clé-au-choix`
-
-Ensuite,dans GitLab :
-- vous devez créer un nouveau projet et y déposer le contenu de ce dépot ( `https://github.com/alinuxien/k8s-aws-iac` )
-- éditez le fichier `terraform.tfvars` pour le personnaliser, notamment l'emplacement de la paire de clés ( privée et publique, **en chemin complet** ), le nom de domaine dans la variable `app-domain`, et les types d'instance pour les nodes du Cluster, `k8s-controller-nodes-instance-type` et `k8s-worker-nodes-instance-type` ( j'ai choisi `c5d.xlarge` pour accélérer un peu le process mais `t2.micro` fonctionne très bien, et est beaucoup moins cher :) )
-Pour information, Terraform utilise 2 fichiers pour gérer les variables : `vars.tf` pour déclarer les variables et éventuellement leur donner une valeur par défaut, et `terraform.tfvars` pour spécifier la valeur des variables si elles n'ont pas valeur par défaut ou changer la valeur par défaut.
-- vous allez créer des variables de CI/CD pour renseigner les crédentials AWS : 
+Dans GitLab :
+- vous devez créer un nouveau projet nommé `Service On Demand` et y déposer le contenu de ce dépot ( `https://github.com/alinuxien/service-on-demand` )
+- vous devez ensuite créer des variables de CI/CD pour renseigner les crédentials Docker Hub ainsi que MySQL : 
 - Dans le projet, allez dans le menu de gauche, Settings -> CI/CD, puis développez les `Variables`, et créez : 
-- AWS_ACCESS_KEY_ID **en masqué**
-- AWS_SECRET_ACCESS_KEY **en masqué**
-- AWS_DEFAULT_REGION ( eu-west-3 par exemple )
-- AWS_REGION ( eu-west-3 par exemple )
-- AWS_STATE_BUCKET : le nom du bucket S3
-- AWS_STATE_KEY : un nom au choix, comme le nom du projet, qui sera utilisé comme racine pour le nom des objets de Remote State Terraform
-- TF_IN_AUTOMATION : true
+- CI_REGISTRY **en masqué** : docker.io
+- CI_REGISTRY_IMAGE : index.docker.io/username/repository
+- CI_REGISTRY_PASSWORD **en masqué**
+- CI_REGISTRY_USER **en masqué**
+- MYSQL_ROOT_PASSWORD **en masqué**
+- MYSQL_USER **en masqué**
+- MYSQL_USER **en masqué**
+- vous allez maintenant créer un groupe GitLab nommé `Service On Demand` et mettre le projet `Service On Demand`dedans 
+- dans ce groupe, vous allez créer un token de déploiement pour accéder à la Container Registry GitLab : 
+- dans le menu Settings -> Repository, développez `Deploy tokens`
+- dans ce menu de création, mettez le nom `gitlab-deploy-token`, cochez la case `read_registry` et cliquez sur le bouton `Create Deploy Token`
+- notez bien le nom d'utilisateur et le mot de passe ( valeur du token ) générés
+- toujours dans ce groupe, vous allez créer des variables de CI/CD pour ce token : 
+- CI_DEPLOY_USER **en masqué**
+- CI_DEPLOY_PASSWORD **en masqué**
+- je précise que le nom du token et le nom de ces 2 variables de CI/CD est très important et doit être celui indiqué, car GitLab va pouvoir les interpréter pour tous les projets du groupe automatiquement.
 
-Et voilà! L'environnement de travail est prêt. Il suffit d'exécuter le pipeline : 
-- dans GitLab, menu de gauche, CI/CD -> Pipelines
-- cliquez sur le bouton bleu en haut à droite `Run Pipeline`
-- le reste est automatique : GitLab va faire des vérification, planifier, et créer le Cluster. 
-- la dernière étape ( sur 4 ), sert à détruire le Cluster sur AWS, et est manuelle, pour que vous puissiez en profiter un peu d'abord... D'ailleurs, pensez bien à détruire le Cluster, dans tous les cas, pour ne pas allourdir votre facture AWS inutilement.
+Et voilà! Le Service On Demand est prêt. 
 
-Quand le Cluster est créé, et l'accès est configuré pour l'utilisateur `vagrant` dans la VM. Pour le tester, dans un terminal :
-- `kubectl version` 
-- `kubectl cluster-info`
-- `kubectl get nodes` liste les noeuds enregistrés dans le cluster
-- `kubectl get all -A` liste tous les objets Kubernetes existant dans le cluster, sur tous les namespaces
+Mais comme je l'ai indiqué, il ne peut être exécuté tel quel.
+Les projets "clients" pour utiliser ce service à conditions qu'ils fassent partie du groupe `Service On Demand`
 
 # Et après ?
-Pour jouer avec ce Cluster, je vous propose la suite du projet, qui consiste à mettre en place un Service On Demand, capable de déployer des applications PHP-MySQL depuis GitLab vers le Cluster, sous forme de pods, de deployments et de services, et [disponible ici](https://github.com/alinuxien/service-on-demand)
+Pour utiliser ce service, vous pouvez retrouver un projet client "type" [disponible ici](https://github.com/alinuxien/service-on-demand-demo-client)
