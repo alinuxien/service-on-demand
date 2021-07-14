@@ -15,8 +15,8 @@ Lorsque le Pipeline du Service On Demand est déclenché, il va :
 - récupérer l'image Docker de l'application du développeur depuis la Container Registry intégrée à GitLab
 - envoyer cette image sur le Docker Hub
 - créer des objets Kubernetes de `deployment` et de `service` pour l'application PHP et MySQL, et d'autres objets Kubernetes utiles, sur un cluster distant, en utilisant les images stockées sur le Docker Hub.
-- le pod PHP créé peut accéder au pod MySQL
-- le pod MySQL crée un stockage "persistant" basique, basé sur un volume nommé
+- les 2 pods PHP créés peuvent accéder au pod MySQL
+- le pod MySQL utilise un stockage "persistant" basique pour les données, basé sur un volume anonyme Docker
 
 ## Ca ressemble à quoi ?
 ![Vue d'ensemble du Processus du Service On Demand](https://github.com/alinuxien/service-on-demand/blob/master/Service%20On%20Demand.png)
