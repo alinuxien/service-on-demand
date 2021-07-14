@@ -56,8 +56,8 @@ Dans GitLab :
 - dans ce menu de création, mettez le nom `gitlab-deploy-token`, cochez la case `read_registry` et cliquez sur le bouton `Create Deploy Token`
 - notez bien le nom d'utilisateur et le mot de passe ( valeur du token ) générés
 - toujours dans ce groupe, vous allez créer des variables de CI/CD pour ce token : 
-- CI_DEPLOY_USER **en masqué**
-- CI_DEPLOY_PASSWORD **en masqué**
+- CI_DEPLOY_USER **en masqué** : nom d'utilisateur du token
+- CI_DEPLOY_PASSWORD **en masqué** : le mot de passe ( valeur ) du token 
 - je précise que le nom du token et le nom de ces 2 variables de CI/CD est très important et doit être celui indiqué, car GitLab va pouvoir les interpréter pour tous les projets du groupe automatiquement.
 
 Et voilà! Le Service On Demand est prêt. 
