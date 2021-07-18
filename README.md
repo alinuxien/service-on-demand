@@ -44,7 +44,7 @@ Dans GitLab :
 - vous devez ensuite créer des variables de CI/CD pour renseigner les crédentials Docker Hub, ainsi que MySQL : 
 - Dans le projet, allez dans le menu de gauche, Settings -> CI/CD, puis développez les `Variables`, et créez : 
 - CI_REGISTRY **en masqué** : docker.io
-- CI_REGISTRY_IMAGE : index.docker.io/*username*/*repository*
+- CI_REGISTRY_IMAGE : index.docker.io/*username*/*repository* **en masqué**
 - CI_REGISTRY_PASSWORD **en masqué**
 - CI_REGISTRY_USER **en masqué**
 - MYSQL_ROOT_PASSWORD **en masqué**
